@@ -1,0 +1,9 @@
+[default]
+projectname = ReST,
+
+[acp]
+.txt = rst.acp,
+
+[highlight]
+.txt = rst
+

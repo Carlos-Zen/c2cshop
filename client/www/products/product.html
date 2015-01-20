@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1" charset="UTF-8">
+   <!-- <link rel="stylesheet" href="jqm/jquery.mobile-1.4.2.css">-->
+    <link rel="stylesheet" href="../css/m-huaer.css">
+    <script src="../common/jquery.js"></script>
+    <script type="text/javascript" src="../common/jquery.mmenu.js"></script>
+    <link rel="stylesheet" href="../css/jquery.mmenu.css">
+    <link rel="stylesheet" href="../css/demo.css">
+    <!--<script src="jqm/jquery.mobile-1.4.2.js"></script>-->
+    <!-- ember -->
+	<script type="text/javascript" src="../ember/handlebars-1.1.2.js"></script>
+    <script type="text/javascript" src="../ember/ember-1.5.1.js"></script>
+    <script type="text/javascript" src="../ember/ember-data.js"></script>
+    <!--<script type="text/javascript" src="../ember/ember-bridge-jqm.js"></script>-->
+	<!-- customer -->
+    <script type="text/javascript" src="../common/common.js"></script>
+    <script type="text/javascript" src="../common/auth.js"></script>
+    <script type="text/javascript" src="../common/Cart.js"></script>
+	<script type="text/javascript" src="../javascript/app.js"></script>
+    <script type="text/javascript" src="../common/common_mmenu.js"></script>
+
+ </head>
+	<script language="javascript">
+	 $(function(){
+			$('.m_xq_xq span').click(function(){
+			var liindex = $('.m_xq_xq span').index(this);
+			if(liindex==0){
+				$('.m_xq_xiangqing').show();
+				$('.m_xq_piengjia').hide();
+				$('.m_xq_xq_q').css("border-top","2px solid #bb0000")
+				$('.m_xq_pj').css("border-top","2px solid #fff")
+			};
+			if(liindex==1){
+				$('.m_xq_xiangqing').hide();
+				$('.m_xq_piengjia').show();
+				$('.m_xq_pj').css("border-top","2px solid #bb0000")
+				$('.m_xq_xq_q').css("border-top","2px solid #fff")
+			};	
+			});
+		})
+		function add_cart(goods_id,goods_name,promote_price,market_price,goods_thumb,from){
+			var goods_number=parseInt($("#number").val());
+			var goods={'goods_id':goods_id,'goods_name':goods_name,'promote_price':promote_price,'market_price':market_price,'goods_thumb':goods_thumb,'goods_number':goods_number}
+			shopping_cart= new cart();
+			var r=shopping_cart.insert(goods);
+			if(from=='cart'){
+			if(r){
+				alert('加入购物车成功！')
+				}
+			}
+			}
+
+		function number(mark){
+			var getValue = $('#number').val(); 
+			var result =  parseInt(getValue);
+				if(mark=='plus'){	
+				result+=1;
+				}else{
+				result-=1;	
+				if(result<=1){
+					result=1;
+					$('#number').val(result);
+					}
+				}
+				$('#number').val(result)
+		}
+			
+		
+		
+    </script>
+ <body>
+ 	<script type="text/x-handlebars" data-template-name="todos">
+    <div data-role="page">
+		<div data-role="header" class="m_lb_head">
+			<a href="javascript:history.back(-1)"><div class="m_lb_hr">返回</div></a>
+			<div class="m_lb_tit"> 商品详情</div>
+            <div class="m_lb_log">
+				{{#if islogin}}
+				<a href="../users/usercenter.html"><img src="../img/user.png"></a>
+				{{/if}}
+				<a href="../order/shopping_cart.html"><img src="../img/buy.png"></a>
+				<a href="#menu"><img src="../img/fl.png"></a>
+			 </div>
+		</div> 
+		<div data-role="content" class="m_xq_con">
+			<div id="m_xq_img"><img {{bind-attr src=goodsinfo.goods_img}} width=320 height=210></div>
+			<div class="m_xq_title">{{goodsinfo.goods_name}}</div>
+			<div class="m_xq_cx">
+				<span class="m_xq_cx_tit">促销：</span>
+				<span class="m_xq_tg">包邮</span>
+				<span class="m_xq_jg">¥{{goodsinfo.shop_price}}</span>
+			</div>
+			<div class="m_xq_cx">
+				<span class="m_xq_cx_tit">原价：</span>
+				<span id="m_xq_yj">¥{{goodsinfo.market_price}}</span>
+			</div>
+			<div class="m_xq_cx">
+				<span class="m_xq_cx_tit">销量：</span>
+				<span class="m_xq_j">{{goodsinfo.salesvol}}件</span>
+			</div>
+			<style type="text/css">
+			.shu_y{border: 1px solid #ddd;padding: 0px 4px;background: #eee;border-radius: 3px; cursor:pointer;}
+			#number{ width:50px; text-align:center;}
+			</style>
+			<div class="m_xq_cx">
+					<div class="product_sell">
+						<span class="product_l_span">购买数量：</span>
+						<span class="shu_y" onclick="number('minus')" >-</span>
+						<span  class="product_sl" ><input data-role="none" type="text" value="1" id="number"/></span>
+						<span class="shu_y" onclick="number('plus')" >+</span>
+						<span class="product_l_span" style="margin-left:10px;">库存({{goods_number}})件</span>
+					</div>
+			</div>
+			<style type="text/css">
+			.te_size{float:left; padding:10px 0px; width:90%; border-bottom:1px dashed #ddd; margin-left:15px;}
+			.te_size p{float:left; width:50px; font-family:"宋体";}
+			.te_size ul li{border:1px solid #ddd; float:left; margin-left:10px; padding:2px 7px; font-size:14px; list-style:none;}
+			</style>			
+			{{#each goodsbuyattr}}
+			<div class="te_size" >
+			{{#each }}
+				<ul>
+					<p>{{attr_name}}</p>
+					{{#if is_pic }}														 
+						{{#each attrs }}
+							<li>{{attr_value}}</li>
+						{{/each}}
+					{{/if}}
+				</ul>
+			{{/each}}
+			</div>
+			{{/each}}
+			<div class="m_xq_cx">
+				<span class="m_xq_cx_tit">配送：</span>
+				<span id="m_xq_ps">陕西西安</span>
+				<span class="m_xq_z">至</span>
+				<span id="m_xq_ps">广东深圳</span>
+				<span id="m_xq_ps">快递：12元</span>
+			</div>
+			<div class="m_xq_cx1">
+				<span class="m_xq_cx_mj" onclick="add_cart('{{ unbound goodsinfo.goods_id}}','{{ unbound goodsinfo.goods_name}}','{{ unbound goodsinfo.promote_price}}','{{ unbound goodsinfo.market_price}}','{{ unbound goodsinfo.goods_img}}','cart')">加入购物车</span>
+				<a href="../order/shopping_cart.html"><span class="m_xq_gm"  onclick="add_cart('{{ unbound goodsinfo.goods_id}}','{{ unbound goodsinfo.goods_name}}','{{ unbound goodsinfo.promote_price}}','{{ unbound goodsinfo.market_price}}','{{ unbound goodsinfo.goods_img}}')">立即购买</span></a>
+			</div>
+			<div class="m_xq_xq">
+				<span class="m_xq_xq_q">详情</span>
+				<span class="m_xq_pj">评价</span>
+			</div>
+			<div style=" clear:both;"></div>
+		   <div class="m_xq_xiangqing">
+				 <div class="m_xq_pj_con">
+					<p>产品参数</p>
+					   <ul>
+					   {{#each goodsinfo.attr }}
+						<li>{{name}}：{{value}}</li>
+					   {{/each}}
+					   </ul>
+				 </div>
+				 {{goodsinfo.goods_desc}}
+			</div>
+			<div class="m_xq_piengjia" style=" display:none">
+				{{#each comments}}
+				<div class="m_xq_pj_con">
+					<div class="m_xq_pj_content">{{content}}</div>
+					<span class="m_xq_pj_name">{{user_name}}</span>
+					<span class="m_xq_pj_time">{{add_time}}</span>
+				</div>
+				{{/each}}
+			</div>
+        </div>
+		<div data-role="footer">
+			<div class="con_foot">
+				<p>CopyRight2009-2013 粤ICP备08114786号-1</p>
+				<p>华尔商城</p>
+			</div>
+		</div>
+    </div>
+    <nav id="menu">
+        <ul>
+            <li class="Selected">
+               <p style=" color:#f00">所有商品分类</p>
+				
+                <ul>
+				{{#each catgoods}}
+					<h3>{{cat_name}}</h3>
+				{{#each sons}}
+                    <li><a class="list_a"  href="third_cat.html?cat_id={{ unbound id}}">{{cat_name}}</a></li>
+				{{/each}}
+				<div style=" clear:both;"></div>
+				{{/each}}
+                </ul>	
+            </li>
+            
+        </ul>
+    </nav>
+	</script>
+ </body>
+</html> 

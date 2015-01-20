@@ -1,0 +1,348 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1" charset="UTF-8">
+   <!-- <link rel="stylesheet" href="jqm/jquery.mobile-1.4.2.css">-->
+    <link rel="stylesheet" href="../css/huaer_order.css">
+    
+    <script src="../common/jquery.js"></script>
+    <!--<script src="jqm/jquery.mobile-1.4.2.js"></script>-->
+    <!-- ember -->
+	<script type="text/javascript" src="../ember/handlebars-1.1.2.js"></script>
+    <script type="text/javascript" src="../ember/ember-1.5.1.js"></script>
+    <script type="text/javascript" src="../ember/ember-data.js"></script>
+    <!--<script type="text/javascript" src="ember/ember-bridge-jqm.js"></script>-->
+	<!-- customer -->
+    <script type="text/javascript" src="../common/common.js"></script>
+    <script type="text/javascript" src="../common/auth.js"></script>
+    <script type="text/javascript" src="../javascript/order.js"></script>
+    <script type="text/javascript" src="../common/area.js"></script>
+        <script type="text/javascript" src="../common/common_foot.js"></script>
+ </head>
+	 <script language="javascript">
+		if(!is_login){
+			window.location.href="../auth/login.html?from=cart";
+		
+			}
+        $(function(){
+			var user_content=ath.get_userinfo();
+			console.log(user_content.user_id);
+			_init_area(); //三级联动
+			//初始化
+			$(".submint_pay").find("p").eq(0).find("input").attr("checked","checked")
+			var p=$(".submint_pay").find("p").eq(0).find("input").nextAll(".pay_id").text();
+			$("#pay").html(p)
+			$(".submit_shopping").find("p").eq(0).find("input").attr("checked","checked")
+			var s=$(".submit_shopping").find("p").eq(0).find("input").nextAll(".shopping_id").text();
+			$("#shopping").html(s);
+			var m=parseInt($(".submit_shopping").find("p").eq(0).find("input").nextAll(".shopping_money").text());
+			$("#s_m").html(m.toFixed(2));
+			var c=parseInt($("#c_m").text());
+			var c_m_y=(c+m).toFixed(2);
+			$("#contentmoney").html(c_m_y)
+			order_url()
+			//支付id
+			$(".submint_pay").find("p").find("input").click(function(){
+			var pay_id=$(this).nextAll(".pay_id").text();
+			$("#pay").html(pay_id)
+			order_url()
+			})
+			$(".submint_pay").find("p").click(function(){
+			$(this).find("input").attr("checked","checked")
+			var pay_id=$(this).find(".pay_id").text();
+			$("#pay").html(pay_id)
+			order_url()
+			})
+			//配送id
+			$(".submit_shopping").find("p").find("input").click(function(){
+			 var shopping_id=$(this).nextAll(".shopping_id").text();
+			 var shopping_money=parseInt($(this).nextAll(".shopping_money").text());
+			 $("#shopping").html(shopping_id);
+			 $("#s_m").html(shopping_money.toFixed(2));
+			 var content_m=parseInt($("#c_m").text());
+			 var contentmoney=(content_m+shopping_money).toFixed(2);
+			 $("#contentmoney").html(contentmoney)
+			 order_url()
+			})
+			$(".submit_shopping").find("p").click(function(){
+			$(this).find("input").attr("checked","checked")
+			var shopping_id=$(this).find(".shopping_id").text();
+			$("#shopping").html(shopping_id);
+			var shopping_money=parseInt($(this).find(".shopping_money").text());
+			$("#s_m").html(shopping_money.toFixed(2))
+			var content_m=parseInt($("#c_m").text());
+			var contentmoney=(content_m+shopping_money).toFixed(2);
+			$("#contentmoney").html(contentmoney)
+			order_url()
+			})
+			
+			$(".site_new").click(function(){
+				order_url()
+				})
+			//添加收货地址	
+			$(".addresssub").click(function(){
+				var name=$("#username").val();
+				var mobile=$("#mobile").val();
+				var s_province=$("#s_province").val();
+				var s_city=$("#s_city").val();
+				var s_county=$("#s_county").val();
+				var s_address=$("#s_address").val();
+				var adderss={'user_id':user_content.user_id,'consignee':name,'province':s_province,'city':s_city,'district':s_county,'address':s_address,'mobile':mobile}
+				var add=get_ws_data('add_address',{a:adderss}); //添加收货地址
+				if(add.rs=='ok'){
+					location.reload() ;
+					}
+			})
+			//修改收货地址
+			$("#update_addressing").click(function(){
+				var name=$("#username").val();
+				var mobile=$("#mobile").val();
+				var s_province=$("#s_province").val();
+				var s_city=$("#s_city").val();
+				var s_county=$("#s_county").val();
+				var s_address=$("#s_address").val();
+				var addressid=$("#address_id").text();
+				if((s_province=='省份') || (s_city=='地市级') || (s_county=='市、县级市') ){
+				var s_province=$("#pro").text();
+				var s_city=$("#cit").text();
+				var s_county=$("#cou").text();	
+				}
+				if(name=='' || name.length < 6){
+					alert('用户名不能为空,或用户名过长！')
+					return false;
+				}else if( mobile == '' || !mobile.match(/^1[3|4|5|8][0-9]\d{4,8}$/))
+				{
+					alert('手机号码有误！')
+					return false;
+				}else{
+				var adderss={'consignee':name,'province':s_province,'city':s_city,'district':s_county,'address':s_address,'mobile':mobile}
+				var update_add=get_ws_data('update_address',{a:user_content.user_id,b:addressid,c:adderss}); //修改收货地址
+					if(update_add.rs=='ok'){
+						location.reload() ;
+					}
+				}
+			})
+			$("#province-button").click(function(){
+				$(this).css({"opacity":"1"})
+				$("#district-button").css({"opacity":"1"})
+				$("#city-button").css({"opacity":"1"})
+			})
+		   $("#update_add").click(function(){
+				$("#shows").show() 
+				$(".submit_info").hide()  
+		   })
+		   $("#update_closs").click(function(){
+				$(".submit_info").show() 
+				$("#shows").hide()  
+		   })
+			$("#search_k").click(function(){
+				
+				$(".m_lb_con").show();
+				setTimeout( function(){  //自动获取文本框焦点
+				  try{
+					document.getElementById('m_lb_seac').focus();
+				  } catch(e){}
+				}, 200);
+			})
+		   
+		})
+
+		function order_url(){
+				var pay=$("#pay").text();
+				var shopping=$("#shopping").text();
+				var address=$("#address_id").text();
+				var invoice_type=escape($("#invoice_type").val()); //发票类型
+				var invoice_commercial=escape($("#invoice_commercial").val()); //发票抬头
+				var invoice_info=escape($("#invoice_info").val()); //发票内容
+				var order_remark_info=escape($("#order_remark_info").val()); //订单留言
+				var remark_color=$(".remark_color").text();
+				//var inv_note={'inv_payee':invoice_commercial,'inv_type':invoice_type,'inv_content':invoice_info,'pay_note':order_remark_info}
+				var sddd=window.location.href;
+				var	string= sddd.replace(/submentorder\.html\?count_price=\d{0,9}\.\d{0,5}/,'order_success.html?address_id='+ address +'&shipping_id='+ shopping +'&payment_id='+ pay +'&count_price='+ remark_color +'&invoice_type='+ invoice_type +'&invoice_commercial='+ invoice_commercial +'&invoice_info='+ invoice_info +'&order_remark_info='+ order_remark_info +'');
+				$(".site_new").find('a').attr('href',string);
+			}
+        
+     </script>
+<body>
+	<script type="text/x-handlebars" data-template-name="orders">
+    <div data-role="page">
+        <div data-role="header" class="m_lb_head">
+            <a href="javascript:history.back(-1)"><div class="m_lb_hr">返回</div></a>
+            <div class="m_lb_tit"> 订单结算</div>
+            <div class="m_lb_log">
+				{{#if islogin}}
+				<a href="../users/usercenter.html"><img src="../img/user.png"></a>
+				{{/if}}
+				<a href="../order/shopping_cart.html"><img src="../img/buy.png"></a>
+				<span id="search_k" ><img src="../img/sea.png"></span>
+			 </div>
+        </div>
+        <div data-role="content">
+			<div class="m_lb_con" style="display:none">
+				<form action="search_list.html" method="get" id="searching">
+					{{input type="text"  name="searchs" class="m_lb_seac" id="m_lb_seac" placeholder="搜索产品"}}
+					{{input type="submit" id="sou"}}
+				</form>
+			</div>
+        	<div class="con_title">
+                <div class="con_left">
+                    <img {{bind-attr src=userinfo.user_icon }} class="con-left-img"> 
+                </div>
+                <div class="con_right">
+                    <ul> 				       
+                       <li>{{userinfo.user_name}}</li>
+					   <!--<li style="float:right;margin-right: 1%;padding: 0px 11px;"><span style="font-size: 12px;">消息&nbsp;</span><span class="order_news">18</span></li>-->
+                    </ul>					   
+                </div>
+                <div style="border-bottom: 1px solid rgb(216, 210, 210);margin-top: 21px;width: 100%;"></div>
+                <div class="ticket_info">
+                    <div class="ticket_div">
+                        <ul>
+                            <li><a class="ui-link"><strong>{{userinfo.pay_points}}</strong><br>华币<br></a></li>
+                            <li style="margin-left: -3px;"><a class="ui-link"><font color="red">￥</font><strong>{{userinfo.user_money}}</strong><br>余额<br></a></li>
+                            <li style="margin-right: -12px;"><a class="ui-link"><font color="red"></font><strong>{{ordernum}}个</strong><br>订单数<br></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div style="clear:both;"></div>
+            <div class="submit_title">
+                收货人信息：
+            </div>
+			{{#if addresslist }}
+            {{#each addresslist}}
+            <div class="submit_info">
+                <p>收货人姓名：{{consignee}}  <span id="update_add" style="float:right">修改</span></p>
+                <p>详细地址：{{province}}{{city}}{{district}}{{address}} <span class="submit_biao"></span></p>
+                <p>联系电话：{{mobile}}</p>
+				<p id="address_id" style="display:none">{{address_id}}</p>
+            </div>
+            {{/each}}
+			<div id="shows" style="display:none">
+				<div class="address">		
+					<div class="set">收货人信息 <span id="update_closs">关闭</span></div>
+					<div class="set_input">
+						<span>姓&nbsp;&nbsp;名：</span><input type="text" class="add_in" name="consignee" id="username" value="{{unbound addressupdate.consignee }}">
+					</div>
+					<div class="set_input">
+						<span>电&nbsp;&nbsp;话：</span><input type="text" class="add_in" id="mobile" name="mobile" value="{{unbound addressupdate.mobile }}" >
+					</div>	
+				</div>  
+				<div class="clear"></div>
+				<div class="address">		
+					<div class="set">收货地址信息</div>
+					<div class="set_input">
+						<span >省&nbsp;&nbsp;份：</span>
+						<span id="pro">{{unbound addressupdate.province }}</span>
+						<span id="province-button"><select id="s_province" name="s_province" ></select></span>
+					</div>
+					<div class="set_input">
+						<span>城&nbsp;&nbsp;市：</span> 
+						<span id="cit">{{unbound addressupdate.city }}</span> 
+						<span id="city-button"><select id="s_city" name="s_city" ></select></span>
+					</div>	
+					<div class="set_input">
+						<span>区&nbsp;&nbsp;县：</span>
+						<span id="cou">{{unbound addressupdate.district }}</span>
+						<span id="district-button"><select id="s_county" name="s_county"></select></span>
+					</div>
+					<div class="set_input">
+						<span >详细地址：</span>
+						<span><input type="text" class="add_in" id="s_address" value="{{unbound addressupdate.address }}" ></span> 	
+					</div>	
+				</div>
+				<span id="addressid" style="display:none">{{ unbound addressid}}</span>
+				<div id="update_addressing" > 提交</div>
+			</div>
+			{{else}}
+				<div class="address">		
+					<div class="set">收货人信息</div>
+					<div class="set_input">
+						<span>姓&nbsp;&nbsp;名：</span><input type="text" class="add_in" name="consignee" id="username">
+					</div>
+					<div class="set_input">
+						<span>电&nbsp;&nbsp;话：</span><input type="text" class="add_in" id="mobile" name="mobile" >
+					</div>	
+				</div>  
+				<div class="clear"></div>
+				<div class="address">		
+					<div class="set">收货地址信息</div>
+					<div class="set_input">
+						<span >省&nbsp;&nbsp;份：</span>
+						<span id="province-button"><select id="s_province" name="s_province" ></select></span>
+					</div>
+					<div class="set_input">
+						<span>城&nbsp;&nbsp;市：</span> 
+						<span id="city-button"><select id="s_city" name="s_city" ></select></span>
+					</div>	
+					<div class="set_input">
+						<span>区&nbsp;&nbsp;县：</span>
+						<span id="district-button"><select id="s_county" name="s_county"></select></span>
+					</div>
+					<div class="set_input">
+						<span >详细地址：</span>
+						<span><input type="text" class="add_in" id="s_address"  ></span> 	
+					</div>	
+				</div>
+				<span id="addressid" style="display:none">{{ unbound addressid}}</span>
+				<div class="addresssub"> 提交</div>
+			{{/if}}
+			<div style="display:none"><span id="pay"></span>
+			<span id="shopping"></span>
+			</div>
+            <div class="submit_title">
+                支付方式：
+            </div>
+            <div class="submint_pay">
+                {{#each paymentlist}}
+                <p> {{input type="radio" name="payment" }} {{pay_name}} 
+					<span class="pay_id" style="display:none">{{pay_id}}</span> 
+					<span class="submit_biao"></span>
+				</p>
+                <!--<p>汇款</p>-->
+				{{/each}}
+            </div>
+            <div class="submit_title">
+                配送方式：
+            </div>
+            <div class="submit_shopping">
+            	{{#each shippinglist}}
+                <p> {{input type="radio" name="shipping" }} {{shipping_name}} 费用：￥<span class="shopping_money">{{shipping_price}} </span>
+					<span class="shopping_id" style="display:none">{{shipping_id}}</span>
+					<span class="submit_biao"></span>
+				</p>
+				{{/each}}
+            </div>
+            <div class="submit_title">
+                发票信息：
+            </div>
+            <div class="submit_info">
+                
+                <p>发票类型：{{input type="text" id="invoice_type" placeholder="请输入发票类型,个人 或 公司" size=30}}</p>
+                <p>发票抬头：{{input type="text" id="invoice_commercial" placeholder="请输入发票台头" size=30 }}</p>
+                <p><span style="float:left">发票内容：</span>
+				{{textarea id="invoice_info"  placeholder="请输入发票台头" cols="80" rows="6" }}
+				</p>
+            </div>
+            <div class="submit_title">
+                订单备注：
+            </div>
+            <div class="submit_remark">
+                <!--<input type="text" value="请输入内容" />-->
+				{{textarea id="order_remark_info"  placeholder="请输入内容" cols="80" rows="6" }}
+            </div>
+            <div style="height:85px" class="remark_info">
+                <p class="remark_page">商品金额：￥{{countprice}}   运费：￥<span id="s_m">0.0</apan></p>
+                <p style="border-bottom:0px;">总金额：<span class="remark_color">￥<span id="contentmoney">{{countprice}}</span></span></p>
+				<span style="display:none" id="c_m">{{countprice}}</span>
+            </div>
+            <div class="site_new">
+                <a href="">提交订单 </a>
+            </div>
+        </div>
+		<div class="mob_foot" id="foot_order" data-role="footer"> </div>
+    </div>
+   </script>
+
+</body>
+</html>

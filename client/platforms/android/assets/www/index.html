@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1" charset="UTF-8">
+   <!-- <link rel="stylesheet" href="jqm/jquery.mobile-1.4.2.css">-->
+    <link rel="stylesheet" href="css/index.css">
+    <script src="common/jquery.js"></script>
+    <!--<script src="jqm/jquery.mobile-1.4.2.js"></script>-->
+    <!-- ember -->
+	<script type="text/javascript" src="ember/handlebars-1.1.2.js"></script>
+    <script type="text/javascript" src="ember/ember-1.5.1.js"></script>
+    <script type="text/javascript" src="ember/ember-data.js"></script>
+    <!--<script type="text/javascript" src="ember/ember-bridge-jqm.js"></script>-->
+	<!-- customer -->
+	<script type="text/javascript" src="javascript/huaer.js"></script> 
+ </head>
+<script>
+$(function(){
+	
+alert($("#font_red").text());	
+	
+})
+</script>
+<body>
+<script type="text/x-handlebars" data-template-name="huaer">
+<div class="mob_all" data-role="page">
+    <div class="mob_top" data-role="header">
+        <div class="mob_top_fl"></div>
+        <div class="mob_top_lo"></div>
+        <form method="post">
+        <div class="mob_top_seck">
+            <div class="mob_top_seck_arrow"></div>
+            <input type="text" value="请输入搜索内容！" class="mob_top_seck_input">
+            <div class="mob_top_seck_yy"></div>
+        </div>
+        </form>
+    </div>
+	<div class="mob_banner"><a href="#"><img src="img/banner.jpg" border="0"></a></div>
+	<div class="content" data-role="content">
+		<div class="mob_skill">
+			<div class="skill_time"><span></span>05:38:25.3</div>
+			<div class="mob_skill_img"><a href="#"><img src="img/skil.jpg" border="0"></a></div>
+			<div class="mob_skill_title">
+				<span class="skill_red"><a href="#">[限时秒杀]</a></span><a href="#"> 阿玛尼果冻女士手提包</a>			  <span class="skill_right"><span style="font-family:'微软雅黑'; font-size:18px; font-weight:bold;">￥</span>398<span class="skill_r">.00</span></span>			</div>
+		</div>
+		<div class="mob_fl">
+			<div class="mob_fl_left"></div>
+			<div class="mob_fl_conter">
+				<ul>
+					<li>
+						<div class="mob_fl_li_zb"></div>
+						<p><a href="#">珠宝首饰</a></p>
+					</li>
+					<li>
+						<div class="mob_fl_li_fs"></div>
+						<p><a href="#">服装服饰</a></p>
+					</li>
+					<li>
+						<div class="mob_fl_li_xm"></div>
+						<p><a href="#">鞋帽箱包</a></p>
+					</li>
+					<li>
+						<div class="mob_fl_li_hzp"></div>
+						<p><a href="#">化妆品</a></p>
+					</li>
+					<li>
+						<div class="mob_fl_li_jd"></div>
+						<p><a href="#">家用电器</a></p>
+					</li>
+				</ul>
+				<div style="clear:both"></div>
+			</div>
+			<div class="mob_fl_right"></div>
+		</div>
+		<div class="mob_act">
+			<h3><span style=" width:2.5%; height:25px; background:#ed4873; margin-right:8px; display:block; float:left;"></span>团购专区</h3>
+			<div class="mob_act_pro">
+				<ul>
+				{{#each}}
+					<li>
+						<div class="mob_act_product">
+							<div class="act_time"><span></span>2天</div>
+							<div class="mob_skill_img"><a href="#"><img {{bind-attr src=goods_thumb}} border="0"></a></div>
+							<div class="mob_act_title">
+								<span><a href="#">{{goods_name}}</a></span>
+								<span class="act_yj">￥{{shop_price}}
+									<span class="act_right">
+                                        <span style="font-family:'宋体'; font-size:12px;">￥</span>
+                                       {{promote_price}}<span class="act_r">.00</span>
+                                    </span>	
+                                 </span> 						
+                            </div>
+						</div>
+					</li>
+					{{/each}}
+				</ul>
+				<div style=" clear:both;"></div>
+			</div>
+		</div>		
+		<div class="mob_act">
+			<h3><span style=" width:2.5%; height:25px; background:#ffcc02; margin-right:8px; display:block; float:left;"></span>活动专区</h3>
+			<div class="mob_skill">
+				<div class="act_time"><span></span>2天</div>
+				<div class="mob_skill_img"><a href="#"><img src="img/h1.jpg" border="0"></a></div>
+				<div class="mob_skill_title">
+					<span style=" font-size:13px; font-weight:bold;"><a href="#">全场感恩回馈 国庆中秋疯狂“价期”</a></span>
+					<span class="act_right"><span class="act_r">2.9-4.5折</span></span>				</div>
+			</div>
+			<div class="mob_act_pro">
+				<ul>
+					<li>
+						<div class="mob_act_product">
+							<div class="act_time"><span></span>2天</div>
+							<div class="mob_skill_img"><a href="#"><img src="img/t1.jpg" border="0"></a></div>
+							<div class="mob_act_title">
+								<span><a href="#">DILAKS真皮女包手提包</a></span>
+								<span class="act_yg">2879人已购买
+									<span class="act_right">
+									<span style="font-family:'宋体'; font-size:12px;">￥</span>198<span class="act_r">.00</span>	
+                                    </span>
+                                </span>			
+                             </div>
+						</div>
+					</li>
+					<li>
+						<div class="mob_act_product">
+							<div class="act_time"><span></span>2天</div>
+							<div class="mob_skill_img"><a href="#"><img src="img/t2.jpg" border="0"></a></div>
+							<div class="mob_act_title">
+								<span><a href="#">NB经典复古跑步鞋</a></span>
+								<span class="act_yg">2879人已购买
+									<span class="act_right">
+									<span style="font-family:'宋体'; font-size:12px;">￥</span>198<span class="act_r">.00</span>		</span>						</span>							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div style=" clear:both;"></div>
+		</div>
+		<div class="mob_act">
+			<h3><span style=" width:2.5%; height:25px; background:#00c6ff; margin-right:8px; display:block; float:left;"></span>品牌专区</h3>
+			<div class="mob_skill">
+				<div class="act_time"><span></span>2天</div>
+				<div class="mob_skill_img"><a href="#"><img src="img/pp1.jpg" border="0"></a></div>
+				<div class="mob_skill_title">
+					<span style=" font-size:13px; font-weight:bold;"><a href="#">新品连衣裙特惠专场</a></span>
+					<span class="act_right"><span class="act_r">2.9-4.5折</span></span>				</div>
+			</div>
+			<div class="mob_skill">
+				<div class="act_time"><span></span>2天</div>
+				<div class="mob_skill_img"><a href="#"><img src="img/pp2.jpg" border="0"></a></div>
+				<div class="mob_skill_title">
+					<span style=" font-size:13px; font-weight:bold;"><a href="#">一线大牌女装  每日9点专场</a></span>
+					<span class="act_right"><span class="act_r">2.9-4.5折</span></span>				</div>
+			</div>
+			<div class="mob_skill">
+				<div class="act_time"><span></span>2天</div>
+				<div class="mob_skill_img"><a href="#"><img src="img/pp3.jpg" border="0"></a></div>
+				<div class="mob_skill_title">
+					<span style=" font-size:13px; font-weight:bold;"><a href="#">连衣裙第三期新品发布专场</a></span>
+					<span class="act_right"><span class="act_r">2.9-4.5折</span></span>				</div>
+			</div>
+		</div>
+	</div>
+    <div class="mob_foot" data-role="footer">
+        <div style="height:5px; background:#fff;"></div>
+        <div class="foot_content">
+            <div class="foot_home"><a href="#" id="font_red">首页</a></div>
+            <div class="foot_sc"><a href="#">收藏</a></div>
+            <div class="foot_buy"><a href="#">购物车</a></div>
+            <div class="foot_user"><a href="#">我的华尔</a></div>
+        </div>
+    </div>
+</div>
+</script>
+</body>
+</html>

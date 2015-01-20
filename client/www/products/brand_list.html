@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1" charset="UTF-8">
+   <!-- <link rel="stylesheet" href="jqm/jquery.mobile-1.4.2.css">-->
+    <link rel="stylesheet" href="../css/m-huaer.css">
+    <!--<script src="jqm/jquery.mobile-1.4.2.js"></script>-->
+    <!-- ember -->
+	<script src="../common/jquery.js"></script>
+    <script type="text/javascript" src="../common/jquery.mmenu.js"></script>
+    <link rel="stylesheet" href="../css/jquery.mmenu.css">
+    <link rel="stylesheet" href="../css/demo.css">
+	<script type="text/javascript" src="../ember/handlebars-1.1.2.js"></script>
+    <script type="text/javascript" src="../ember/ember-1.5.1.js"></script>
+    <script type="text/javascript" src="../ember/ember-data.js"></script>
+    <!--<script type="text/javascript" src="ember/ember-bridge-jqm.js"></script>-->
+	<!-- customer -->
+	<script type="text/javascript" src="../common/common.js"></script> 
+    <script type="text/javascript" src="../common/auth.js"></script>
+	<script type="text/javascript" src="../javascript/brand_list.js"></script> 
+    <script type="text/javascript" src="../common/common_mmenu.js"></script>
+    <script type="text/javascript" src="../common/common_foot.js"></script>
+ </head>
+<script type="text/javascript">
+		
+$(function() {
+
+btime()
+//setInterval(btime,1000);
+});
+			
+			
+function btime(){
+	for( var i=0; i<$(".b_time").size(); i++){
+		var strat_time=parseInt($(".b_time").eq(i).find("span").eq(0).text())*1000
+		var endtime=parseInt($(".b_time").eq(i).find("span").eq(1).text())*1000	
+		var gtst= _fresh(strat_time,endtime)
+		$(".brandtime").eq(i).html(gtst[0])
+		}
+	
+	}
+
+ function _fresh(strat_time,endtime)
+{	
+	 var nowtime = new Date(); 
+		 if((nowtime.getTime()-strat_time)>0){
+			 //alert(nowtime.getTime())
+			 //alert(strat_time)
+			 var leftsecond=parseInt((endtime-nowtime.getTime())/1000);
+			 __d=parseInt(leftsecond/3600/24);
+			 __h=parseInt((leftsecond/3600)%24);
+			 __m=parseInt((leftsecond/60)%60);
+			 __s=parseInt(leftsecond%60);
+			 
+			 return Array( __d+"天",(__h+"小时"+__m+"分"+__s+"秒"),(__d+"天"+__h+"小时"+__m+"分"+__s+"秒"));			 
+				 if(leftsecond<=0){
+				 $("#m_xq_time").html("秒杀已结束");
+				 $(".famous_times").hide();
+				 clearInterval(sh);
+				 }
+			}
+}
+</script>
+        <body style="margin:0 auto; background:#f7f7f7;">
+        
+    <script type="text/x-handlebars" data-template-name="product">
+	<div data-role="page">
+        <div data-role="header" class="m_lb_head">
+            <a href="javascript:history.back(-1)"><div class="m_lb_hr">返回</div></a>
+            <div class="m_lb_tit">品牌专区</div>
+            <div class="m_lb_log">
+				{{#if islogin}}
+				<img src="../img/user.png">
+				{{/if}}
+				<img src="../img/buy.png">
+				<a href="#menu"><img src="../img/fl.png"></a>
+			 </div>
+        </div>
+        <div data-role="content">
+        <div class="m_lb_con">
+            <form action="search_list.html" method="get" id="searching">
+                {{input type="text"  name="searchs" class="m_lb_seac" placeholder="搜索产品"}}
+				{{input type="submit" id="sou"}}
+            </form>
+        </div>
+		<div id="appending">
+		{{#each brandlistgoods}}
+		<div class="mob_skill">
+			<div class="act_time">
+				<span class="tu"></span >
+				<span class="brandtime"></span>
+			</div>
+			<div class="b_time" style="display:none">
+			  <span>{{unbound start_time}}</span>
+			  <span>{{unbound end_time}}</span>
+			</div>
+			<div class="mob_skill_img"><a href="./sale_list.html?brand_id={{ unbound brand_id}}"><img {{bind-attr src=act_img}} width=304 height=132 border="0"></a></div>
+			<div class="mob_skill_title">
+				<span style=" font-size:13px; font-weight:bold;"><a href="./sale_list.html?brand_id={{ unbound brand_id}}">{{act_name}}</a></span>
+				<span class="act_right"> <span class="act_r">{{low_discount}}-{{high_discount}}折</span> </span>	
+			</div>
+		</div>
+		{{/each}}
+		</div>
+        <div class="m_lb_gd">查看更多品牌</div>
+        </div>
+		<div style="clear:both"></div>
+		<div class="mob_foot" id="foot_products" data-role="footer"> </div>
+   </div> 
+   
+    <nav id="menu">
+        <ul>
+            <li class="Selected">
+               <p style=" color:#f00">所有商品分类</p>
+				
+                <ul>
+				{{#each catgoods}}
+					<h3>{{cat_name}}</h3>
+				{{#each sons}}
+                    <li><a class="list_a"  href="third_cat.html?cat_id={{ unbound id}}">{{cat_name}}</a></li>
+				{{/each}}
+				<div style=" clear:both;"></div>
+				{{/each}}
+                </ul>	
+            </li>
+            
+        </ul>
+    </nav>
+	</script>
+
+</body>
+</html>

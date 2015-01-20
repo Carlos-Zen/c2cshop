@@ -1,0 +1,198 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1" charset="UTF-8">
+   <!-- <link rel="stylesheet" href="jqm/jquery.mobile-1.4.2.css">-->
+    <link rel="stylesheet" href="../css/huaer_order.css">
+    
+    <script src="../common/jquery.js"></script>
+    <!--<script src="jqm/jquery.mobile-1.4.2.js"></script>-->
+    <!-- ember -->
+	<script type="text/javascript" src="../ember/handlebars-1.1.2.js"></script>
+    <script type="text/javascript" src="../ember/ember-1.5.1.js"></script>
+    <script type="text/javascript" src="../ember/ember-data.js"></script>
+    <!--<script type="text/javascript" src="ember/ember-bridge-jqm.js"></script>-->
+	<!-- customer -->
+    <script type="text/javascript" src="../common/common.js"></script>
+    <script type="text/javascript" src="../common/auth.js"></script>
+    <script type="text/javascript" src="../common/Cart.js"></script>
+    <script type="text/javascript" src="../javascript/shopping_cart.js"></script>
+        <script type="text/javascript" src="../common/common_foot.js"></script>
+ </head>
+	<script language="javascript">
+		$(function(){
+			//初始化
+			var num=0;
+			var count=0;
+			for(var i=0; i<$(".cart_chan").size(); i++){
+				var getprice=parseInt($(".goods_shu").eq(i).find("span:eq(0)").text());
+				var getnum=parseInt($(".cart_number").eq(i).text())
+				$(".price_count").eq(i).text(getprice*getnum);
+				count+=(getprice*getnum);
+				$("#goodsnumcount").text(count.toFixed(2))
+				}
+				//把总价格付给结算链接
+				var sddd=window.location.href;
+				var	string= sddd.replace(/shopping_cart\.html/,'submentorder.html?count_price='+ count.toFixed(2) +'');  
+				$("#jie_a").attr("href",string)
+			
+			 //数量减
+			$(".cart_jian").click(function(){
+				var getprice=parseInt($(this).parent("p").prev("p").find("span:eq(0)").text());
+				var getid=parseInt($(this).parent("p").next("span").text());
+				var getnumber=parseInt($(this).next('.cart_number').text());
+				getnumber-=1;
+				if(getnumber<=1){
+					getnumber=1;
+					}
+				shopping_cart.addnum(getid,-1)
+				$(this).next('.cart_number').text(getnumber);
+				var pricecount=getprice*getnumber
+				$(this).parent("p").prev("p").find("span:eq(1)").text(pricecount)
+				var tot=0;
+				for(var i=0;i<$(".goods_shu").size();i++){ 
+					  tot+=parseInt($(".goods_shu").eq(i).find('span').eq(1).text());
+					 }
+					 tot=tot.toFixed(2);
+				$("#goodsnumcount").text(tot)
+				//把总价格付给结算链接
+				var sddd=window.location.href;
+				var	string= sddd.replace(/shopping_cart\.html/,'submentorder.html?count_price='+ tot +'');  
+				$("#jie_a").attr("href",string)
+				})
+			
+			//数量加
+			$(".cart_jia").click(function(){
+				var getprice=parseInt($(this).parent("p").prev("p").find("span:eq(0)").text());
+				var getid=parseInt($(this).parent("p").next("span").text());
+				var getnumber=parseInt($(this).prev('.cart_number').text());
+				getnumber+=1;
+				shopping_cart.addnum(getid,1)
+				$(this).prev('.cart_number').text(getnumber);
+				var pricecount=getprice*getnumber
+				$(this).parent("p").prev("p").find("span:eq(1)").text(pricecount)
+				var tot=0;
+				for(var i=0;i<$(".goods_shu").size();i++){ 
+					  tot+=parseInt($(".goods_shu").eq(i).find('span').eq(1).text());
+					 }
+					 tot=tot.toFixed(2);
+				$("#goodsnumcount").text(tot)
+				//把总价格付给结算链接
+				var sddd=window.location.href;
+				var	string= sddd.replace(/shopping_cart\.html/,'submentorder.html?count_price='+ tot +'');  
+				$("#jie_a").attr("href",string)
+				})
+				
+			$(".del_goods").click(function(){
+				var getid=parseInt($(this).prev("span").text());
+				//console.log(getid);
+				var ok=shopping_cart.del(getid);
+				if(ok){
+					location.reload();
+					//$(this).parent(".cart_right").parent(".cart_chan").remove();
+					}
+				})
+			$("#search_k").click(function(){
+				
+				$(".m_lb_con").show();
+				setTimeout( function(){  //自动获取文本框焦点
+				  try{
+					document.getElementById('m_lb_seac').focus();
+				  } catch(e){}
+				}, 200);
+			})		
+		})
+		
+		
+		
+    </script>
+<body>
+	<script type="text/x-handlebars" data-template-name="cart">
+    <div data-role="page">
+		<div data-role="header" class="m_lb_head">
+			<a href="javascript:history.back(-1)"><div class="m_lb_hr">返回</div></a>
+			<div class="m_lb_tit"> 购物车</div>
+            <div class="m_lb_log">
+				{{#if islogin}}
+				<a href="../users/usercenter.html"><img src="../img/user.png"></a>
+				{{/if}}
+				<a href="../order/shopping_cart.html"><img src="../img/buy.png"></a>
+				<span id="search_k" ><img src="../img/sea.png"></span>
+			 </div>
+		</div>
+        <div data-role="content">
+			<div class="m_lb_con" style="display:none">
+				<form action="search_list.html" method="get" id="searching">
+					{{input type="text"  name="searchs" class="m_lb_seac" id="m_lb_seac" placeholder="搜索产品"}}
+					{{input type="submit" id="sou"}}
+				</form>
+			</div>
+		{{#if userinfo }}
+        	<div class="con_title">
+                <div class="con_left">
+                    <img {{bind-attr src=userinfo.user_icon }} class="con-left-img"> 
+                </div>
+                <div class="con_right">
+                    <ul> 				       
+                       <li>{{userinfo.user_name}}</li>
+					   <!--<li style="float:right;margin-right: 1%;padding: 0px 11px;"><span style="font-size: 12px;">消息&nbsp;</span><span class="order_news">18</span></li>-->
+                    </ul>					   
+                </div>
+                <div style="border-bottom: 1px solid rgb(216, 210, 210);margin-top: 21px;width: 100%;"></div>
+                <div class="ticket_info">
+                    <div class="ticket_div">
+                        <ul>
+                            <li><a class="ui-link"><strong>{{userinfo.pay_points}}</strong><br>华币<br></a></li>
+                            <li style="margin-left: -3px;"><a class="ui-link"><font color="red">￥</font><strong>{{userinfo.user_money}}</strong><br>余额<br></a></li>
+                            <li style="margin-right: -12px;"><a class="ui-link"><font color="red"></font><strong>{{ordernum}}个</strong><br>订单数<br></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+			{{/if}}
+            <div style="clear:both;"></div>
+			{{#with islogin as login }}
+            {{#each cartgoods}}
+            <div class="cart_chan">
+                <div class="cart_left">
+                    <img  {{bind-attr src=goods_thumb}} width=100 height=100 />
+                </div>
+                <div class="cart_right">
+                    <p class="cart_title">{{goods_name}}</p>
+                    <p class="goods_shu">商城价：￥<span class="remark_color">{{goods_price}}</span> 
+								<span class="price_count" style="display:none"></span>
+					</p>
+                    <p>数量：<span class="cart_jian">-</span>
+                            <span class="cart_number">{{ unbound goods_number}}</span>
+							<!--<span class="cart_number"><input data-role="none" type="text" value="1" id="number"/></span>-->
+                            <span class="cart_jia">+</span>
+                   </p>
+				   <span style="display:none">
+				   {{#if login}}
+				   {{ unbound rec_id}}
+				   {{else}}
+				   {{ unbound goods_id}}
+				   {{/if}}
+				
+				   </span>
+                    <p class="del_goods" ><span id="cart_delete">删除</span></p>
+                </div>
+                <div class="cart_bj"></div>
+            </div>
+            {{/each}}
+			{{/with}}
+			{{#if cartgoods }}
+            <div class="remark_info">
+                <!--<p class="remark_page">商品金额：￥35679   运费：￥5.00</p>-->
+                <p style="border-bottom:0px;">总金额：<span class="remark_color">￥<span id="goodsnumcount"></span></span></p>
+            </div>
+            <a id="jie_a" href=""><div id="site_new">
+                去结算
+            </div></a>
+			{{/if}}
+            </div>
+		    <div class="mob_foot" id="foot_order" data-role="footer"> </div>
+    </div>
+	</script>
+</body>
+</html>

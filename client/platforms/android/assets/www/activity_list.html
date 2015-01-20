@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1" charset="UTF-8">
+   <!-- <link rel="stylesheet" href="jqm/jquery.mobile-1.4.2.css">-->
+    <link rel="stylesheet" href="css/m-huaer.css">
+    <script src="common/jquery.js"></script>
+    <!--<script src="jqm/jquery.mobile-1.4.2.js"></script>-->
+    <!-- ember -->
+	<script type="text/javascript" src="ember/handlebars-1.1.2.js"></script>
+    <script type="text/javascript" src="ember/ember-1.5.1.js"></script>
+    <script type="text/javascript" src="ember/ember-data.js"></script>
+    <!--<script type="text/javascript" src="ember/ember-bridge-jqm.js"></script>-->
+	<!-- customer -->
+	<script type="text/javascript" src="javascript/product_list.js"></script> 
+    
+ </head>
+
+<body style="margin:0 auto; background:#f7f7f7;">
+	<div data-role="page">
+        <div data-role="header" class="m_lb_head">
+            <div class="m_lb_hr">返回</div>
+            <div class="m_lb_tit">活动专区</div>
+            <div class="m_lb_log"></div>
+        </div>
+        <script type="text/x-handlebars" data-template-name="product">
+         
+        <div data-role="content">
+        <div class="m_lb_con">
+            <form action="" method="get">
+                <input type="text" value="冬季新款上市！" class="m_lb_seac">
+            </form>
+        </div>
+        <div class="m_lb_xz">
+            <div class="m_lb_li"><a href="#">人气</a></div>
+            <div class="m_lb_li1"><a href="#">销量</a></div>
+            <div class="m_lb_li1"><a href="#">价格</a></div>
+            <div class="m_lb_li2"><a href="#">时间</a></div>
+        </div>
+		{{#each}}
+        <div id="m_lb_pro">
+            <div class="m_lb_img"><img {{bind-attr src=goods_thumb}}></div>
+            <div class="m_lb_prod">
+                <div class="m_mszq_title"><a href="#">{{goods_name}}</a></div>
+                <div class="m_lb_yj">
+                    <span>¥{{promote_price}}</span>
+                    <span id="m_lb_j">¥{{shop_price}}</span>
+                </div>
+                <div class="m_lb_jg">
+                    <span>{{discount}}折</span>
+                    <div class="m_lb_yj_m">{{salesvol}}人已购买</div>
+                </div>
+            </div>
+        </div>
+		{{/each}}
+        <div class="m_lb_gd">查看更多商品</div>
+        </div>
+		
+        <div data-role="footer">
+            <div class="m_lb_foot">
+                <span>登录  注册</span>
+                <span id="m_lb_foot_b"></span>
+            </div>
+            <div class="m_lb_foot_f">CopyRight2009-2013 粤ICP备08114786号-1<br>华尔商城</div>
+        </div>
+		</script>
+   </div> 
+   
+
+</body>
+</html>

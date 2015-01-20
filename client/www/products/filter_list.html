@@ -1,0 +1,181 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1" charset="UTF-8">
+   <!-- <link rel="stylesheet" href="jqm/jquery.mobile-1.4.2.css">-->
+    <link rel="stylesheet" href="../css/m-huaer.css">
+    <script src="../common/jquery.js"></script>
+    <script type="text/javascript" src="../common/jquery.mmenu.js"></script>
+    <link rel="stylesheet" href="../css/jquery.mmenu.css">
+    <link rel="stylesheet" href="../css/demo.css">
+    <!--<script src="jqm/jquery.mobile-1.4.2.js"></script>-->
+    <!-- ember -->
+	<script type="text/javascript" src="../ember/handlebars-1.1.2.js"></script>
+    <script type="text/javascript" src="../ember/ember-1.5.1.js"></script>
+    <script type="text/javascript" src="../ember/ember-data.js"></script>
+    <!--<script type="text/javascript" src="ember/ember-bridge-jqm.js"></script>-->
+	<!-- customer -->
+    <script type="text/javascript" src="../common/common.js"></script>
+    <script type="text/javascript" src="../common/auth.js"></script>
+	<script type="text/javascript" src="../javascript/filter_list.js"></script>
+    <script type="text/javascript" src="../common/common_mmenu.js"></script> 
+    <script type="text/javascript" src="../common/common_foot.js"></script>
+    
+ </head>
+<script type="text/javascript">
+			
+$(function(){
+	var brand_i=$("#filer").find('li').eq(0).find('a').html()
+	var price_i=$("#filer").find('li').eq(1).find('span').html()
+	var attr_i=parseInt($("#filer").find('li').eq(2).find('a').html());
+	if(attr_i==0){
+		$("#filer").find('li').eq(2).hide()
+		}
+	if((brand_i=='' & price_i=='' &attr_i==0) || (typeof(price_i)=='undefined' & typeof(brand_i)=='undefined')){
+		$("#filer").hide();
+		}
+		filer_products(0)
+		filer_products(2)
+	
+        var log_url= window.location.href;
+
+       str_url= log_url.match(/attr1=\d{1,8}/);
+	  var h_size=$("h3:gt(2)").size();
+	  for(var j=0; j<h_size; j++){ 
+	  var index=j+2;
+	  alert(index)
+	   var li_size= $("h3").eq(index).nextAll("li").size(); 
+				for(var i=0;i<li_size;i++){ 
+					var h_a_url=$("h3").eq(index).nextAll("li").eq(i).find("a").attr('href')
+						attr_r= h_a_url.replace(/attr1/,'attr2');
+						strf= attr_r.match(/attr2=\d{1,8}/);
+					var	string= attr_r.replace(/attr2=\d{1,8}/,''+ str_url +'&'+ strf +''); 
+					$("h3").eq(index).nextAll("li").eq(i).find("a").attr('href',string)
+					 }
+	  }
+	})
+	function filer_products(num){
+		var filer_id=parseInt($("#filer").find('li').eq(num).find('a').html());
+		$("#filer_p").find('li input').each(function(){
+			if(parseInt($(this).val()) == filer_id){
+				var filer_text=$(this).next('a').html();
+				$("#filer").find('li').eq(num).find('a').html(filer_text+"×")
+				}
+			})
+		
+		}		
+</script>
+<body style="margin:0 auto; background:#f7f7f7;">
+	<script type="text/x-handlebars" data-template-name="product">
+	<div data-role="page">
+        <div data-role="header" class="m_lb_head">
+            <a href="javascript:history.back(-1)"><div class="m_lb_hr">返回</div></a>
+            <div class="m_lb_tit">商品筛选</div>
+            <div class="m_lb_log">
+				{{#if islogin}}
+				<a href="../users/usercenter.html"><img src="../img/user.png"></a>
+				{{/if}}
+				<a href="../order/shopping_cart.html"><img src="../img/buy.png"></a>
+				<a href="#menu"><img src="../img/fl.png"></a>
+			 </div>
+        </div> 
+        <div data-role="content">
+        <div class="m_lb_con">
+            <form action="search_list.html" method="get" id="searching">
+                {{input type="text"  name="searchs" class="m_lb_seac" placeholder="搜索产品"}}
+				{{input type="submit" id="sou"}}
+            </form>
+        </div>
+        <div class="m_lb_xz">
+            <div class="m_lb_li"><a href="filter_list.html?cat_id={{ unbound catid.a }}&brand_id={{ unbound catid.b}}&min={{ unbound catid.c}}&max={{ unbound catid.d}}&attr1={{ unbound catid.e}}&order=salesvol">销量</a></div>
+            <div class="m_lb_li1"><a href="filter_list.html?cat_id={{ unbound catid.a }}&brand_id={{ unbound catid.b}}&min={{ unbound catid.c}}&max={{ unbound catid.d}}&attr1={{ unbound catid.e}}&order=click_count">人气</a></div>
+            <!--<div class="m_lb_li1"><a href="#">价格</a></div>-->
+            <div class="m_lb_li2"><a href="filter_list.html?cat_id={{ unbound catid.a }}&brand_id={{ unbound catid.b}}&min={{ unbound catid.c}}&max={{ unbound catid.d}}&attr1={{ unbound catid.e}}&order=add_time">时间</a></div>
+        </div>
+		<div id="filer">
+			<p style=" width:74px; float:left; margin-left:15px;">当前筛选：</p>
+			{{#if catid.b }}
+			 <li class="filer_li"><a href="filter_list.html?cat_id={{ unbound catid.a }}&brand_id=&min={{ unbound catid.c}}&max={{ unbound catid.d}}&attr1={{ unbound catid.e}}">{{ unbound catid.b}}</a></li>
+			 {{else}}
+			 <li style=" float:left; list-style:none;"></li> 
+			 {{/if}} 
+			 {{#if catid.c }}
+			 <li  class="filer_li"><span style="display:none"></span><a href="filter_list.html?cat_id={{ unbound catid.a }}&brand_id={{ unbound catid.b}}&min=&max=&attr1={{ unbound catid.e}}"> 
+			 {{ unbound catid.c}}元 -{{ unbound catid.c}} 元 ×</a></li>
+			 {{else}}
+			 <li style=" float:left; list-style:none;"></li> 
+			 {{/if}}
+			 <li  class="filer_li"><a href="filter_list.html?cat_id={{ unbound catid.a }}&brand_id={{ unbound catid.b}}&min={{ unbound catid.c}}&max={{ unbound catid.d}}&attr1=">
+			 {{ unbound catid.e}}</a></li>
+		</div>
+		<div id="appending">
+		{{#each filtergoods }}
+        <div id="m_lb_pro">
+            <a href="product.html?goods_id={{unbound goods_id}}"><div class="m_lb_img"><img {{bind-attr src=goods_thumb}} width=100 height=100 ></div> </a>
+            <div class="m_lb_prod">
+                <div class="m_mszq_title">
+				<a href="product.html?goods_id={{unbound goods_id}}">{{goods_name}} </a>
+				</div>
+                <div class="m_lb_yj">
+                    <span>¥{{shop_price}}</span>
+                    <span id="m_lb_j">¥{{market_price}}</span>
+                </div>
+                <div class="m_lb_jg">
+                    <span>{{discount}}折</span>
+                    <div class="m_lb_yj_m">{{salesvol}}人已购买</div>
+                </div>
+            </div>
+        </div>
+		{{/each}}
+		</div>
+        <div class="m_lb_gd">查看更多商品</div>
+        </div>
+		<div style="clear:both"></div>
+		<div class="mob_foot" id="foot_products" data-role="footer"> </div>
+   </div> 
+    <nav id="menu">
+        <ul>
+            <li class="Selected">
+               <p style=" color:#f00">所有商品分类</p>
+				
+                <ul id=filer_p>
+					<h3>品牌</h3>
+					<!-- a:为cat_id ,b:为brand_id ,c为最低价格min ,d为最高价格max ,e为attr1筛选属性 ,h为order排序-->
+				{{#with catid as cat }}
+				{{#each brandfilter}}
+                    <li><input type="hidden"  value="{{ unbound brand_id}}" />
+					<a class="list_a"  href="filter_list.html?cat_id={{ unbound cat.a }}&brand_id={{ unbound brand_id}}&min={{ unbound cat.c}}&max={{ unbound cat.d}}&attr1={{ unbound cat.e}}&order={{ unbound cat.h}}">{{ unbound brand_name}}</a></li>
+				{{/each}}
+				{{/with}}
+				<div style=" clear:both;"></div>
+				<h3>价格</h3>
+				<li><a class="list_a"  href="filter_list.html?cat_id={{ unbound catid.a }}&brand_id={{ unbound catid.b}}&min={{ unbound pricefilter1}}&max={{ unbound pricefilter2}}&attr1={{ unbound catid.e}}&order={{ unbound catid.h}}">{{pricefilter1}}-{{pricefilter2}}</a></li>
+				<li><a class="list_a"  href="filter_list.html?cat_id={{ unbound catid.a }}&brand_id={{ unbound catid.b}}&min={{ unbound pricefilter2}}&max={{ unbound pricefilter3}}&attr1={{ unbound catid.e}}&order={{ unbound catid.h}}">{{pricefilter2}}-{{pricefilter3}}</a></li>
+				<li><a class="list_a"  href="filter_list.html?cat_id={{ unbound catid.a }}&brand_id={{ unbound catid.b}}&min={{ unbound pricefilter3}}&max={{ unbound pricefilter4}}&attr1={{ unbound catid.e}}&order={{ unbound catid.h}}">{{pricefilter3}}-{{pricefilter4}}</a></li>
+				<li><a class="list_a"  href="filter_list.html?cat_id={{ unbound catid.a }}&brand_id={{ unbound catid.b}}&min={{ unbound pricefilter4}}&max={{ unbound pricefilter5}}&attr1={{ unbound catid.e}}&order={{ unbound catid.h}}">{{pricefilter4}}-{{pricefilter5}}</a></li>
+				<li><a class="list_a"  href="filter_list.html?cat_id={{ unbound catid.a }}&brand_id={{ unbound catid.b}}&min={{ unbound pricefilter5}}&max={{ unbound pricefilter6}}&attr1={{ unbound catid.e}}&order={{ unbound catid.h}}">{{pricefilter5}}-{{pricefilter6}}</a></li>
+				<li><a class="list_a"  href="filter_list.html?cat_id={{ unbound catid.a }}&brand_id={{ unbound catid.b}}&min={{ unbound pricefilter6}}&max=99999&attr1={{ unbound catid.e}}&order={{ unbound catid.h}}">{{pricefilter6}}以上</a></li>
+				<div style=" clear:both;"></div>
+				{{#with catid as cat }}
+				{{#each attrfilter}}
+					<h3>{{attr_name}}</h3>
+					
+					{{#each attrs }}
+                    <li><input type="hidden"  value="{{ unbound value_id}}" />
+					<a class="list_a"  href="filter_list.html?cat_id={{ unbound cat.a }}&brand_id={{ unbound cat.b}}&min={{ unbound cat.c}}&max={{ unbound cat.d}}&attr1={{ unbound value_id}}&order={{ unbound cat.h}}">{{ unbound attr_value}}</a></li>
+					{{/each}}
+					
+					<div style=" clear:both;"></div>
+				{{/each}}
+				{{/with}}
+				<div style=" clear:both;"></div>
+                </ul>
+				
+            </li>
+            
+        </ul>
+    </nav>
+   </script>
+
+</body>
+</html>

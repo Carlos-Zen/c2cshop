@@ -1,0 +1,188 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1" charset="UTF-8">
+   <!-- <link rel="stylesheet" href="jqm/jquery.mobile-1.4.2.css">-->
+    <link rel="stylesheet" href="../css/huaer_order.css">
+    
+    <script src="../common/jquery.js"></script>
+    <!--<script src="jqm/jquery.mobile-1.4.2.js"></script>-->
+    <!-- ember -->
+	<script type="text/javascript" src="../ember/handlebars-1.1.2.js"></script>
+    <script type="text/javascript" src="../ember/ember-1.5.1.js"></script>
+    <script type="text/javascript" src="../ember/ember-data.js"></script>
+    <!--<script type="text/javascript" src="ember/ember-bridge-jqm.js"></script>-->
+	<!-- customer -->
+    <script type="text/javascript" src="../common/common.js"></script>
+    <script type="text/javascript" src="../common/auth.js"></script>
+    <script type="text/javascript" src="../javascript/user_info.js"></script>
+ </head>
+<script language="javascript">
+$(document).ready(function(){
+	
+	$("#passwordTip").html("请输入密码！");
+	$("#confirm_pwdTip").html("请输入确认密码！");
+		$("#email").mousedown(function(){
+			$(this).val('');
+			$("#emailTip").html("<span style='color:#999999;font-size:14px;'>请输入邮箱地址</span>");
+		});
+		$("#email").blur(function(){
+			if($("#email")[0].value != '' && !$("#email").val().match(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/))
+			{
+				$("#emailTip").html("您输入的邮箱地址格式有误!");
+				$("#email").focus();
+			}
+			else
+				$("#emailTip").html("");
+		});
+		
+		$("#username").mousedown(function(){
+			$(this).val('');
+			$("#usernameTip").html("<span style='color:#999999;font-size:14px;line-height:22px;'>6-20位字符，可使用字母、数字和下划线及它们的组合</span>");
+		});
+		$("#username").blur(function(){
+			if($("#username")[0].value != '' && !$("#username").val().match(/^[a-zA-Z0-9\u4e00-\u9fa5]+$/gi))
+			{
+				$("#usernameTip").html("<span style='line-height:18px;'>6-20位字符，可使用中文、字母、数字和下划线及它们的组合!</span>");
+				$("#username").focus();
+			}else if($("#username")[0].value == 'admin' || $("#username")[0].value == 'users' || $("#username")[0].value == 'user')
+			{
+				$("#usernameTip").html("<span style='line-height:18px;'>请用合法字段进行注册!</span>");
+				$("#username").focus();
+			}
+			
+			else
+			{
+				$("#usernameTip").html("");				
+			}
+		});
+		
+		
+		$("#phone").mousedown(function(){
+			$(this).val('');
+			$("#handphoneTip").html("<span style='color:#999999;font-size:14px;'>请输入11位手机号码</span>");
+		});
+		$("#phone").blur(function(){			
+			if($("#phone")[0].value != '' && !$("#phone").val().match(/^1[3|4|5|8][0-9]\d{4,8}$/))
+			{
+				$("#handphoneTip").html("您输入的手机号码有误!");
+				$("#handphone").focus();
+			}
+			else
+				$("#handphoneTip").html("");
+		});
+		$("#pwd").mousedown(function(){
+			$("#passwordTip").html("<span style='color:#999999;font-size:14px;line-height:22px;'>6-20位字符，可使用字母、数字和下划线及它们的组合</span>");
+		});
+		$("#pwd").blur(function(){
+			if($("#pwd")[0].value != '' && !$("#pwd").val().match(/^[a-zA-Z0-9\u4e00-\u9fa5\_]+$/))
+			{
+				$("#passwordTip").html("<span style='line-height:18px;'>6-20位字符，可使用字母、数字和下划线及它们的组合</span>!");
+				$("#password").focus();
+			}
+			else
+			$("#passwordTip").html("");
+		});	
+		
+		
+		
+		
+		$("#user_register").click(function(){
+		
+			if($("#username")[0].value=='' ||  $("#username").val().length < 6)
+			{
+				$("#usernameTip").html("用户名为空或长度不符!");
+				$("#username").focus();
+				return false;
+			}else if($("#email")[0].value=='')
+			{
+				$("#emailTip").html("请输入E-mail账户!");
+				$("#email").focus();
+				return false;
+			}else if($("#phone")[0].value=='')
+			{
+				$("#handphoneTip").html("请输入手机号码!");
+				$("#phone").focus();
+				return false;
+			}else if($("#pwd")[0].value=='')
+			{
+				$("#passwordTip").html("请设置密码!");
+				$("#pwd").focus();
+				return false;
+			}else if($("#repwd")[0].value!=$("#pwd")[0].value)
+			{
+				$("#passwordTip").html("两次输入的密码不一致");
+				$("#repwd").focus();
+				return false;
+			}else{
+
+                var name=$("#username").val()
+				var pwd=$("#pwd").val()
+				var email=$("#email").val()
+				var reg_fields={'user_name':name,'password':pwd,'email':email,'from':"mobile"}
+				var reg=ath.register(reg_fields)
+				console.log(reg);
+				 console.log(is_login);
+				 if(is_login){
+					 window.location.href="register_success.html?url="+reg.jump_url.data+"";
+					 }	
+				}
+
+			
+		});
+		
+	});
+</script>
+<body>
+	<script type="text/x-handlebars" data-template-name="userinfo">
+    <div data-role="page">
+        <div data-role="header" class="m_lb_head">
+            <a href="javascript:history.back(-1)"><div class="m_lb_hr">返回</div></a>
+            <div class="m_lb_tit"> 注册</div>
+            <div class="m_lb_log"> </div>
+        </div>
+        <div data-role="content">
+        <div class="login_info">
+            <input  type="text" class="login_f" id="username" name="username" value="用户名"/>
+            <div class="er_usertest" id="usernameTip"> </div>
+            <input  type="password" class="login_p" id="pwd" name="passwd" />
+            <div class="er_usertest" id="passwordTip"> </div>
+            <input type="password" class="login_pagin" id="repwd" name="login_pagin" >
+            <div class="er_usertest" id="confirm_pwdTip"></div>
+            
+            <input  type="text" class="login_email" id="email" name="email" value="邮箱"/>
+            <div class="er_usertest" id="emailTip"></div>
+            <input type="text" class="login_phone" id="phone" name="phone" value="电话"/>
+            <div class="er_usertest" id="handphoneTip"></div>
+        </div>
+		<!--<div class="login_test">
+            //<input type="text" class="test_m" /> <img src=yidong_img/matu.jpg /> <span class="login_forget"> 忘记密码 </span>
+        //</div>-->
+        <div class="free_register" id="user_register">
+            注册
+        </div>
+        <div class="login_null">
+            <p>已有账号去登陆>></p>
+        </div>	
+        </div>
+        <div data-role="footer">
+            <div class="con_log">
+				{{#if islogin}}
+                <span>
+				<a href="../users/usercenter.html"> {{userinfo.user_name}}</a> | <a href="../auth/login.html?login_out=ok">退出登录</a></span>
+				{{else}}
+				<span><a href="../auth/register.html">注册</a> | <a href="../auth/login.html">登录</a></span>
+				{{/if}}
+                <span id="m_lb_foot_b"></span>
+            </div>
+            <div class="con_foot">
+                <p>CopyRight2009-2013 粤ICP备08114786号-1</p>
+                <p>华尔商城</p>
+            </div>
+        </div>
+    </div>
+    </script>
+   
+
+</body>
+</html>

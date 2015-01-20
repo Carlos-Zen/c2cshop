@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1" charset="UTF-8">
+   <!-- <link rel="stylesheet" href="jqm/jquery.mobile-1.4.2.css">-->
+    <link rel="stylesheet" href="../css/huaer_order.css">
+    
+    <script src="../common/jquery.js"></script>
+    <!--<script src="jqm/jquery.mobile-1.4.2.js"></script>-->
+    <!-- ember -->
+	<script type="text/javascript" src="../ember/handlebars-1.1.2.js"></script>
+    <script type="text/javascript" src="../ember/ember-1.5.1.js"></script>
+    <script type="text/javascript" src="../ember/ember-data.js"></script>
+    <!--<script type="text/javascript" src="ember/ember-bridge-jqm.js"></script>-->
+	<!-- customer -->
+    <script type="text/javascript" src="../common/common.js"></script>
+    <script type="text/javascript" src="../common/auth.js"></script>
+	<script type="text/javascript" src="../javascript/order_success.js"></script>
+        <script type="text/javascript" src="../common/common_foot.js"></script>
+ </head>
+	<script language="javascript">
+	$(function(){
+		$("#search_k").click(function(){
+			
+			$(".m_lb_con").show();
+			setTimeout( function(){  //自动获取文本框焦点
+			  try{
+				document.getElementById('m_lb_seac').focus();
+			  } catch(e){}
+			}, 200);
+		})
+	})
+	</script> 
+    <body>
+    <script type="text/x-handlebars" data-template-name="ordersuccesss">
+    <div data-role="page">
+        <div data-role="header" class="m_lb_head">
+            <a href="javascript:history.back(-1)"><div class="m_lb_hr">返回</div></a>
+            <div class="m_lb_tit"> 订单成功</div>
+            <div class="m_lb_log">
+				{{#if islogin}}
+				<a href="../users/usercenter.html"><img src="../img/user.png"></a>
+				{{/if}}
+				<a href="../order/shopping_cart.html"><img src="../img/buy.png"></a>
+				<span id="search_k" ><img src="../img/sea.png"></span>
+			 </div>
+        </div>
+        <div data-role="content"> 
+		<div class="m_lb_con" style="display:none">
+			<form action="search_list.html" method="get" id="searching">
+				{{input type="text"  name="searchs" class="m_lb_seac" id="m_lb_seac" placeholder="搜索产品"}}
+				{{input type="submit" id="sou"}}
+			</form>
+		</div>
+        <style type="text/css">
+        .binding{height:250px; width:85%; margin:0 auto; background:#FC3;}
+        .binding_p{float:left; margin-left:10%; width:32%;}
+        #pay_method{float:left; width:100%}
+        .pay_m{margin:0 auto;}
+        </style>
+        <div style="clear:both;"></div>
+        <div class="binding">
+            <div class="binding_con" style="text-align:center;">
+                <div class="binding_cen"><img src="http://192.168.2.116/mobile/img/ok.jpg"><span>提交成功！</span></div>
+                <div style="clear:both"></div>
+                <p></p>
+                <p class="binding_p" id="email_url"><a href="order_success.html?order=ok">立即支付！</a></p>
+                <p class="binding_p"><a href="../index.html">继续购物</a></p>
+                <div id="pay_method">
+                    <div class="pay_m"></div>
+                </div>
+            </div>
+        </div>    
+        </div>
+		<div class="mob_foot" id="foot_order" data-role="footer"> </div>
+    </div>
+   </script>
+    
+    
+    </body>
+</html>

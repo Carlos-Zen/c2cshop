@@ -1,0 +1,339 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1" charset="UTF-8">
+   <!-- <link rel="stylesheet" href="jqm/jquery.mobile-1.4.2.css">-->
+    <link rel="stylesheet" href="css/index.css">
+    <script src="common/jquery.js"></script>
+    <script type="text/javascript" src="common/jquery.mmenu.js"></script>
+    <link rel="stylesheet" href="css/jquery.mmenu.css">
+    <link rel="stylesheet" href="css/demo.css">
+    <link rel="stylesheet" href="css/idangerous.swiper.css">
+    <!--<script src="jqm/jquery.mobile-1.4.2.js"></script>-->
+    <!-- ember -->
+	<script type="text/javascript" src="ember/handlebars-1.1.2.js"></script>
+    <script type="text/javascript" src="ember/ember-1.5.1.js"></script>
+    <script type="text/javascript" src="ember/ember-data.js"></script>
+    <!--<script type="text/javascript" src="ember/ember-bridge-jqm.js"></script>-->
+	<!-- customer -->
+    <script type="text/javascript" src="common/common.js"></script>
+	<script type="text/javascript" src="javascript/huaer.js"></script> 
+    <script src="common/carouse_ad.js"></script>
+<!--<script type="text/javascript" src="common/jquery.flexslider-min.js"></script>-->
+    <script type="text/javascript" src="common/common_mmenu.js"></script>
+    <script src="common/idangerous.swiper-2.1.min.js"></script>
+ </head>
+<script language="javascript">
+ $(document).ready(function(){
+	 
+  var mySwiper = new Swiper('.mob_fl',{
+    pagination: '.pagination',
+    loop:true,
+    grabCursor: true,
+    paginationClickable: true
+  })
+  $('.mob_fl_left').on('click', function(e){
+    e.preventDefault()
+    mySwiper.swipePrev()
+  })
+  $('.mob_fl_right').on('click', function(e){
+    e.preventDefault()
+    mySwiper.swipeNext()
+  })	 
+	 
+	 
+	 
+	$('.flexslider').flexslider({
+		directionNav: true,
+		pauseOnAction: false
+	});
+	
+	$(".flex-direction-nav").css("display","none")
+timer()
+setInterval(timer,1000);
+gtime()
+setInterval(gtime,1000);
+btime()
+//setInterval(btime,1000);
+
+$(".mob_top_seck").click(function(){
+	$("#search_index").submit();
+	})
+	
+});
+
+function timer(){
+	
+	//var strat_time=1391823191*1000
+	//var endtime=1403809191*1000 
+	var strat_time=parseInt($(".s_time").find("span").eq(0).text())*1000
+	var endtime=parseInt($(".s_time").find("span").eq(1).text())*1000
+    var stst= _fresh(strat_time,endtime)
+	//console.log(stst[1])
+$("#spiketime").html(stst[1])
+}
+	
+function gtime(){
+	for( var i=0; i<$(".g_time").size(); i++){
+		var strat_time=parseInt($(".g_time").eq(i).find("span").eq(0).text())*1000
+		var endtime=parseInt($(".g_time").eq(i).find("span").eq(1).text())*1000	
+		var gtst= _fresh(strat_time,endtime)
+		$(".grouptime").eq(i).html(gtst[0])
+		}
+	
+	}
+
+function btime(){
+	for( var i=0; i<$(".b_time").size(); i++){
+		var strat_time=parseInt($(".b_time").eq(i).find("span").eq(0).text())*1000
+		var endtime=parseInt($(".b_time").eq(i).find("span").eq(1).text())*1000	
+		var gtst= _fresh(strat_time,endtime)
+		$(".brandtime").eq(i).html(gtst[0])
+		}
+	
+	}
+
+ function _fresh(strat_time,endtime)
+{	
+	 var nowtime = new Date(); 
+		 if((nowtime.getTime()-strat_time)>0){
+			 //alert(nowtime.getTime())
+			 //alert(strat_time)
+			 var leftsecond=parseInt((endtime-nowtime.getTime())/1000);
+			 __d=parseInt(leftsecond/3600/24);
+			 __h=parseInt((leftsecond/3600)%24);
+			 __m=parseInt((leftsecond/60)%60);
+			 __s=parseInt(leftsecond%60);
+			var  __d = __d < 10 ? '0'+__d : __d;
+			var  __h = __h < 10 ? '0'+__h : __h;
+			var  __m = __m < 10 ? '0'+__m : __m;
+			var  __s = __s < 10 ? '0'+__s : __s;
+			 return Array( __d+"天",(__h+"小时"+__m+"分"+__s+"秒"));			 
+				 if(leftsecond<=0){
+				 $("#m_xq_time").html("秒杀已结束");
+				 $(".famous_times").hide();
+				 clearInterval(sh);
+				 }
+			}
+}
+
+
+
+</script>
+<body>
+<script type="text/x-handlebars" data-template-name="huaer">
+<div class="mob_all" data-role="page">
+    <div class="mob_top" data-role="header">
+        <!--<a href="#menu"><div class="mob_top_fl"></div></a>-->
+		<a href="./products/categories_list.html"><div class="mob_top_fl"></div></a>
+        <div class="mob_top_lo"></div>
+        <form method="post" action="./products/search_list.html" id="search_index">
+        <div class="mob_top_seck">
+            <div class="mob_top_seck_arrow"></div>
+            <input type="text" value="请输入搜索内容！" class="mob_top_seck_input">
+            <div class="mob_top_seck_yy"></div>
+        </div>
+        </form>
+    </div>
+<style type="text/css">
+
+</style>
+	<div class="mob_banner">		
+		<div class="flexslider">
+			<ul class="slides">  
+			{{#each brandadvertgoods}}  
+			 <li><img {{  bind-attr src=ad_code}} ></li>
+			{{/each}}
+			</ul>
+		</div>	
+	</div>
+	<div class="content" data-role="content">
+
+		<div class="mob_skill">
+			<div class="skill_time"><span class="tu"></span>
+			<span id="spiketime"> </span></div>
+			<div class="mob_skill_img"><a href="./products/spike.html"><img {{bind-attr src=goods.goods_img}} width=100 height=100 border="0"></a></div>
+			<div class="mob_skill_title">
+				<span class="skill_red"><a href="spike.html">[限时秒杀]</a></span><a class="text_length_a" href="./products/spike.html">{{goods.goods_name}}</a>		
+			  <span class="skill_right"><span style="font-family:'微软雅黑'; font-size:18px; font-weight:bold;">￥</span>{{goods.promote_price}}
+			  <div class="s_time" style="display:none">
+				  <span>{{unbound goods.promote_start_date}}</span>
+				  <span>{{unbound goods.promote_end_date}}</span>
+			  </div>
+			  <!--<span class="skill_r">.00</span> --> 
+			  </span>			
+			</div>
+		</div>
+		<div class="device">
+		<div class="mob_fl_left"></div>
+		<div class="mob_fl_right"></div>
+		<div class="mob_fl">
+		  <div class="swiper-wrapper">
+			<div class="swiper-slide">
+				<div class="mob_fl_conter">
+					<ul>
+						<li>
+							<a href="./products/search_list.html"><div class="mob_fl_li_jd"></div></a>
+							<p><a href="./products/search_list.html">家用电器</a></p>
+						</li>
+						<li>
+							<a href="./products/search_list.html"><div class="mob_fl_li_fs"></div></a>
+							<p><a href="./products/search_list.html">童装童鞋</a></p>
+						</li>
+						<li>
+							<a href="./products/search_list.html"><div class="mob_fl_li_hzp"></div></a>
+							<p><a href="./products/search_list.html">活动优惠</a></p>
+						</li>
+						<li>
+							<a href="./products/search_list.html"><div class="mob_fl_li_jd"></div></a>
+							<p><a href="./products/search_list.html">户外用品</a></p>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="swiper-slide">
+				<div class="mob_fl_conter">
+					<ul>
+						<li>
+							<a href="./products/search_list.html"><div class="mob_fl_li_zb"></div></a>
+							<p><a href="./products/search_list.html">珠宝首饰</a></p>
+						</li>
+						<li>
+							<a href="./products/search_list.html"><div class="mob_fl_li_fs"></div></a>
+							<p><a href="./products/search_list.html">服装服饰</a></p>
+						</li>
+						<li>
+							<a href="./products/search_list.html"><div class="mob_fl_li_xm"></div></a>
+							<p><a href="./products/search_list.html">鞋帽箱包</a></p>
+						</li>
+						<li>
+							<a href="./products/search_list.html"><div class="mob_fl_li_hzp"></div></a>
+							<p><a href="./products/search_list.html">化妆品</a></p>
+						</li>
+					</ul>
+				</div>
+			</div>
+		  </div>
+		</div>
+		<div class="pagination"></div>
+		</div>
+		<div class="mob_act">
+			<a href="./products/group_list.html"><h3><span class="group_goods_list"></span>团购专区</h3></a>
+			<div class="mob_act_pro">
+				<ul>
+				{{#each groupgoods}}
+					<li>
+						<div class="mob_act_product">
+							<div class="act_time">
+								<span class="tu"></span>
+								<span class="grouptime"></span>
+							</div>
+							  <div class="g_time" style="display:none">
+								  <span>{{unbound promote_start_date}}</span>
+								  <span>{{unbound promote_end_date}}</span>
+							  </div>
+							<div class="mob_skill_img"><a href="./products/activity.html?goods_id={{ unbound goods_id}}"><img {{bind-attr src=goods_thumb}} border="0"></a></div>
+							<div class="mob_act_title">
+								<span class="text_length"><a href="./products/activity.html?goods_id={{ unbound goods_id}}">{{goods_name}}</a></span>
+								<span class="act_yj">￥{{shop_price}}
+									<span class="act_right">
+                                        <span style="font-family:'宋体'; font-size:12px;">￥</span>
+                                       {{promote_price}}<!--<span class="act_r">.00</span>-->
+                                    </span>	
+                                 </span> 						
+                            </div>
+						</div>
+					</li>
+				{{/each}}	
+				</ul>
+				<div style=" clear:both;"></div>
+			</div>
+		</div>		
+		<div class="mob_act">
+			<a href="./products/activity_list.html"><h3><span class="activity_goods_list"></span>活动专区</h3></a>
+			<div class="mob_skill">
+				<!--<div class="act_time"><span class="tu"></span>2天</div>-->
+				<div class="mob_skill_img"><a href="#"><img {{bind-attr src=advertgoods.ad_code}} border="0"></a></div>
+				<div class="mob_skill_title">
+					<span style=" font-size:13px; font-weight:bold;"><a href="#">{{advertgoods.ad_name}}</a></span>
+					<!--<span class="act_right"><span class="act_r">2.9-4.5折</span></span>	-->
+				</div>
+			</div>
+			<div class="mob_act_pro">
+				<ul>
+					{{#each activitygoods}}
+					<li>
+						<div class="mob_act_product">
+							<!--<div class="act_time"><span class="tu"> </span>2天</div>-->
+							<div class="mob_skill_img"><a href="./products/activity.html?goods_id={{ unbound goods_id }}"><img {{bind-attr src=goods_thumb}} border="0"></a></div>
+							<div class="mob_act_title">
+								<span class="text_length" ><a href="./products/activity.html?goods_id={{ unbound goods_id }}">{{goods_name}}</a></span>
+								<span class="act_yg">{{salesvol}}人已购买
+									<span class="act_right">
+									<span style="font-family:'宋体'; font-size:12px;">￥</span>{{promote_price}}
+									<!--<span class="act_r">.00</span>-->	
+									</span>
+                                </span>			
+                             </div>
+						</div>
+					</li>
+					{{/each}}
+				</ul>
+			</div>
+			<div style=" clear:both;"></div>
+		</div>
+		<div class="mob_act">
+			<a href="./products/brand_list.html"><h3><span class="brand_goods_list"></span>品牌专区</h3></a>
+			{{#each brandgoods}}
+			<div class="mob_skill">
+				<div class="act_time">
+					<span class="tu"></span >
+					<span class="brandtime"></span>
+				</div>
+				<div class="b_time" style="display:none">
+				  <span>{{unbound start_time}}</span>
+				  <span>{{unbound end_time}}</span>
+				</div>
+				<div class="mob_skill_img"><a href="./products/sale_list.html?brand_id={{ unbound brand_id}}"><img {{bind-attr src=act_img}} width=304 height=132 border="0"></a></div>
+				<div class="mob_skill_title">
+					<span style=" font-size:13px; font-weight:bold;"><a href="./products/sale_list.html?brand_id={{ unbound brand_id}}">{{act_name}}</a></span>
+					<span class="act_right"> <span class="act_r">{{low_discount}}-{{high_discount}}折</span> </span>	
+				</div>
+			</div>
+			{{/each}}
+		</div>
+		<div style="clear:both"></div>
+	</div>
+	
+    <div class="mob_foot" data-role="footer">
+        <div style="height:5px; background:#fff;"></div>
+        <div class="foot_content">
+            <div class="foot_home"><a href="index.php" id="font_red">首页</a></div>
+            <div class="foot_sc"><a href="./users/collection_list.html">收藏</a></div>
+            <div class="foot_buy"><a href="./order/shopping_cart.html">购物车</a></div>
+            <div class="foot_user"><a href="./users/usercenter.html">我的华尔</a></div>
+			
+        </div>
+    </div>
+</div>
+    <nav id="menu">
+        <ul>
+            <li class="Selected">
+               <p style=" color:#f00">所有商品分类</p>
+				
+                <ul>
+				{{#each catgoods}}
+					<h3>{{cat_name}}</h3>
+				{{#each sons}}
+                    <li><a class="list_a"  href="third_cat.html?cat_id={{ unbound id}}">{{cat_name}}</a></li>
+				{{/each}}
+				<div style=" clear:both;"></div>
+				{{/each}}
+                </ul>	
+            </li>
+            
+        </ul>
+    </nav>
+</script>
+</body>
+</html>

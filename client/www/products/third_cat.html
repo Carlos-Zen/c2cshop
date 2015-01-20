@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1" charset="UTF-8">
+   <!-- <link rel="stylesheet" href="jqm/jquery.mobile-1.4.2.css">-->
+    <link rel="stylesheet" href="../css/m-huaer.css">
+    <script src="../common/jquery.js"></script>
+    <script type="text/javascript" src="../common/jquery.mmenu.js"></script>
+    <link rel="stylesheet" href="../css/jquery.mmenu.css">
+    <link rel="stylesheet" href="../css/demo.css">
+    <!--<script src="jqm/jquery.mobile-1.4.2.js"></script>-->
+    <!-- ember -->
+	<script type="text/javascript" src="../ember/handlebars-1.1.2.js"></script>
+    <script type="text/javascript" src="../ember/ember-1.5.1.js"></script>
+    <script type="text/javascript" src="../ember/ember-data.js"></script>
+    <!--<script type="text/javascript" src="ember/ember-bridge-jqm.js"></script>-->
+	<!-- customer -->
+    <script type="text/javascript" src="../common/common.js"></script>
+    <script type="text/javascript" src="../common/auth.js"></script>
+	<script type="text/javascript" src="../javascript/categories_list.js"></script>
+    <script type="text/javascript" src="../common/common_mmenu.js"></script>
+    <script type="text/javascript" src="../common/common_foot.js"></script>
+    
+ </head>
+
+<body style="margin:0 auto; background:#f7f7f7;">
+	<script type="text/x-handlebars" data-template-name="product">
+    <div data-role="page">	
+        <div data-role="header" class="m_lb_head">
+            <a href="javascript:history.back(-1)"><div class="m_lb_hr">返回</div></a>
+            <div class="m_lb_tit">特卖专区</div>
+            <div class="m_lb_log">
+				{{#if islogin}}
+				<a href="../users/usercenter.html"><img src="../img/user.png"></a>
+				{{/if}}
+				<a href="../order/shopping_cart.html"><img src="../img/buy.png"></a>
+				<a href="#menu"><img src="../img/fl.png"></a>
+			 </div> 
+        </div>
+        <div data-role="content">
+			<div class="m_lb_con">
+				<form action="search_list.html" method="get" id="searching">
+					{{input type="text"  name="searchs" class="m_lb_seac" placeholder="搜索产品"}}
+					{{input type="submit" id="sou"}}
+				</form>
+			</div>
+            <div class="m_fl_con">
+                <ul>
+
+                    <li class="m_fl_con_li">
+  
+                        <p id="m_fl_con_fls">
+							{{#each thirdcat}}
+                            <span><a href="filter_list.html?cat_id={{ unbound id }}" class="m_fl_con_fls-a">{{cat_name}}</a> </span>
+                        	{{/each}}
+						</p>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+		<div class="mob_foot" id="foot_products" data-role="footer"> </div>
+    </div>
+    <nav id="menu">
+        <ul>
+            <li class="Selected">
+               <p style=" color:#f00">所有商品分类</p>
+				
+                <ul>
+				{{#each catgoods}}
+					<h3>{{cat_name}}</h3>
+				{{#each sons}}
+                    <li><a class="list_a"  href="third_cat.html?cat_id={{ unbound id}}">{{cat_name}}</a></li>
+				{{/each}}
+				<div style=" clear:both;"></div>
+				{{/each}}
+                </ul>	
+            </li>
+            
+        </ul>
+    </nav>
+   </script>
+
+</body>
+</html>
